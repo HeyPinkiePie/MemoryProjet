@@ -11,15 +11,15 @@ img{
   padding: 1vh;
  }
 
-#classeQuatre{
+.classeQuatre{
   width: 40%;
   height: 50%;
 }
-#classeDouze{
+.classeDouze{
   width: 25%;
   height: 32%;
 }
-#classeVingt{
+.classeVingt{
   width: 18%;
   height: 22%;
 }

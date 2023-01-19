@@ -27,30 +27,30 @@ export class LoginComponent{
   }
 
 // donner le focus au Nom à l'affichage de l'écran de connexion
-  ngAfterViewInit() {
-    if (this.inputFocus) {
-      this.inputFocus.first.nativeElement.focus();
-    }
-  }
+//   private ngAfterViewInit() :void{
+//     if (this.inputFocus) {
+//       this.inputFocus.first.nativeElement.focus();
+//     }
+//   }
 
   /////////////////////
   //Vérifications
   /////////////////////
-  nomInvalide() {
+  public nomInvalide() :boolean{
     return  this.loginFormulaire.controls["champNom"].value.length<3;
   }
 
-  mdpInvalide() {
+  public mdpInvalide() :boolean{
     return this.loginFormulaire.controls["champPwd"].value.length<6;
   }
-  FormulaireInvalide() {
+  public FormulaireInvalide() : boolean{
     return this.mdpInvalide() || this.nomInvalide();
   }
 
   /////////////////////
   //Traitement
   /////////////////////
-  connexion() {
+  public connexion() : void{
    let ok:boolean= this.jouerService.cnx(this.loginFormulaire.controls["champNom"].value,this.loginFormulaire.controls["champPwd"].value);
    if (ok) this.router.navigate(["/profil"]);
    else alert("cet utilisateur n'existe pas, veuillez vérifier les informations saisies ou créer un compte.")
@@ -60,9 +60,7 @@ export class LoginComponent{
   // lorsque l'utilisateur clique sur entrer on valide, si OK
   @HostListener('document:keypress', ['$event'])
   reInitBarreEspace(event: KeyboardEvent) {
-    if (event.key==="Enter"){
-      if (!this.FormulaireInvalide()) this.connexion();
-    }
+    if (event.key==="Enter" && !this.FormulaireInvalide()) this.connexion();
   }
 
 }

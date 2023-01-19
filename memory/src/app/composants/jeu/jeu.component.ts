@@ -17,7 +17,7 @@ export class JeuComponent implements OnInit{
   public grille!:GrilleDeJeu;
   public jeuFini:boolean=false;
 
-  get user():Joueur|undefined{
+  get user():Joueur|null{
     return this.jouerService.joueurActuel;
   }
   /////////////////////////

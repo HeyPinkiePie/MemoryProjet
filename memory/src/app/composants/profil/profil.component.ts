@@ -16,7 +16,7 @@ export class ProfilComponent implements OnInit{
   public profilForm:FormGroup;
   public choixMemoryChemin:String|undefined;
 
-  get user():Joueur|undefined{
+  get user():Joueur|null{
     return this.jouerService.joueurActuel;
   }
 

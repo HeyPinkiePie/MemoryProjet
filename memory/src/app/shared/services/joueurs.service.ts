@@ -10,19 +10,25 @@ export class JoueursService {
 
   public cnxEvent:EventEmitter<Joueur>=new EventEmitter<Joueur>();
   private lesJoueurs:Joueur[] | any;
-  private _joueurActuel:Joueur | undefined;
+  private _joueurActuel:Joueur|null ;
 
-  get joueurActuel(): Joueur | undefined {
-    return this._joueurActuel;
+  get joueurActuel(): Joueur | null {
+   return this._joueurActuel;
   }
 
+  /////////////////////////
+  // Initialisation
+  /////////////////////////
+  constructor() {
+    this._joueurActuel=null;
+  }
 
   /////////////////////////
   // traitement
   /////////////////////////
   public creerCompte(nom:string, email:string, mdp:string){
-        //this._joueurActuel=new Joueur(nom,email,mdp);
-    let jo:Joueur = new Joueur(nom,email,mdp);
+
+        let jo:Joueur = new Joueur(nom,email,mdp);
         // persistance
         // si le tableau n'est pas déjà défini, récupérer s'il existe, le tableau de joueurs dans le local storage, s'il n'existe pas en créer un nouveau
         if (!this.lesJoueurs) this.initTableauJoueurs();
@@ -32,7 +38,6 @@ export class JoueursService {
         localStorage.setItem("lesJoueurs",JSON.stringify(this.lesJoueurs));
         // propager la connexion aux autres composants
         //this.cnxEvent.emit(this._joueurActuel);
-
   }
 
 private initTableauJoueurs(){
@@ -59,7 +64,7 @@ private initTableauJoueurs(){
   // déconnexion => propagation de l'évenement et réinit des champs (joueur actuel et liste des joueurs)
   public deconnecter() {
     this.cnxEvent.emit(undefined);
-    this._joueurActuel=undefined;
+    this._joueurActuel=null;
     this.lesJoueurs=undefined;
   }
   public emailValide(mail:string):boolean{

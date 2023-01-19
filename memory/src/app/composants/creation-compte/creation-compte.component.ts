@@ -1,5 +1,5 @@
-import {Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {Component, ElementRef, HostListener,  QueryList, ViewChildren} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn} from "@angular/forms";
 import {Router} from "@angular/router";
 import {JoueursService} from "../../shared/services/joueurs.service";
 import {Joueur} from "../../shared/modeles/joueur";
@@ -10,28 +10,25 @@ import {Joueur} from "../../shared/modeles/joueur";
   styleUrls: ['./creation-compte.component.css']
 })
 
-export class CreationCompteComponent implements OnInit {
+export class CreationCompteComponent {
   // On récupère le champ qui est taggué avec #inputFocus dans le html, soit le Input nom
   @ViewChildren('inputFocus') inputFocus: QueryList<ElementRef>|undefined;
 
   public CreationCompteForm: FormGroup;
-  public user: Joueur | undefined;
+  public user: Joueur | null;
 
   /////////////////////////
   // Initialisation
   /////////////////////////
   constructor(private builder: FormBuilder, private router: Router, private joueurService: JoueursService) {
+    this.user = this.joueurService.joueurActuel;
     //création du formulaire, ajout des controles.
     this.CreationCompteForm = builder.group({
-      champNom: [''],
-      champMail: [''],
+      champNom: ['',this.champUniqueValidator('nom',"le nom n'est pas unique")],
+      champMail: ['',this.champUniqueValidator('email',"l'email n'est pas unique")],
       champPwd1: [''],
       champPwd2: ['']
     });
-  }
-
-  ngOnInit(): void {
-    this.user = this.joueurService.joueurActuel;
   }
 
   /////////////////////////
@@ -39,22 +36,18 @@ export class CreationCompteComponent implements OnInit {
   /////////////////////////
   //appelé au click sur le bouton "Création du compte".
   public insription() {
-    if (!this.formulaireInvalide()) {
-      if (this.joueurService.champDejaUtilise("nom", this.CreationCompteForm.controls["champNom"].value))
-        alert("Ce nom est déjà pris, choisissez-en un autre svp");
-      else {
-        if (this.joueurService.champDejaUtilise("email", this.CreationCompteForm.controls["champMail"].value))
-          alert("Cette adresse email est liée à un autre compte, veuillez vous connecter ou choisir une autre adresse.");
+      if (!this.formulaireInvalide()) {
+        if (this.CreationCompteForm.controls["champNom"].invalid) alert("Ce nom est déjà pris, choisissez-en un autre svp");
+        else if (this.CreationCompteForm.controls["champMail"].invalid) alert("Cette adresse email est liée à un autre compte, " +
+          "veuillez vous connecter ou choisir une autre adresse.");
         else {
-            this.joueurService.creerCompte(this.CreationCompteForm.controls["champNom"].value,
-            this.CreationCompteForm.controls["champMail"].value,
-            this.CreationCompteForm.controls["champPwd1"].value);
-            this.router.navigate(['/login']);
+          this.joueurService.creerCompte(this.CreationCompteForm.controls["champNom"].value,
+                    this.CreationCompteForm.controls["champMail"].value,
+                    this.CreationCompteForm.controls["champPwd1"].value);
+          this.router.navigate(['/login']);
         }
       }
-    } else {
-      alert("il y a des soucis sur le formulaire, veuillez vérifier svp");
-    }
+      else alert("il y a des soucis sur le formulaire, veuillez vérifier svp");
   }
 
   //appelé au click sur le bouton "Annuler", vide les champs de saisie.
@@ -77,32 +70,30 @@ export class CreationCompteComponent implements OnInit {
   }
 
   public nomInvalide(): boolean {
-    let retour: boolean;
-    retour = this.CreationCompteForm.controls["champNom"].touched && this.CreationCompteForm.controls["champNom"].value.length < 3;
-    //if(this.CreationCompteForm.controls["champNom"].touched && retour);
-    return retour;
+    return this.CreationCompteForm.controls["champNom"].touched &&
+          this.CreationCompteForm.controls["champNom"].value.length < 3;
   }
 
   public emailInvalide(): boolean {
-    let retour: boolean;
-    retour = this.CreationCompteForm.controls["champMail"].touched && (this.joueurService.emailValide(this.CreationCompteForm.controls["champMail"].value));
-    return retour;
+    return this.CreationCompteForm.controls["champMail"].touched &&
+            (this.joueurService.emailValide(this.CreationCompteForm.controls["champMail"].value));
   }
 
   public mdpInvalide(): boolean {
-    let retour: boolean;
     let expressionReguliere = /^(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/
-    retour = this.CreationCompteForm.controls["champPwd1"].touched && (!expressionReguliere.test(this.CreationCompteForm.controls["champPwd1"].value));
-    return retour;
+   return this.CreationCompteForm.controls["champPwd1"].touched &&
+            (!expressionReguliere.test(this.CreationCompteForm.controls["champPwd1"].value));
   }
 
   public mdpDifferents(): boolean {
-    let retour: boolean;
-    retour = this.CreationCompteForm.controls["champPwd2"].touched &&
+    return  this.CreationCompteForm.controls["champPwd2"].touched &&
       (this.CreationCompteForm.controls["champPwd2"].value !== this.CreationCompteForm.controls["champPwd1"].value);
-    return retour;
   }
-
+  public  champUniqueValidator(champ: string, message:string):ValidatorFn{
+    return (control:AbstractControl):{[key:string]:any}|null=>{
+      const nope= this.joueurService.champDejaUtilise(champ,control.value);
+      return nope ? {'message':{value: message}} : null;};
+  }
   /////////////////
   // action
   /////////////////
