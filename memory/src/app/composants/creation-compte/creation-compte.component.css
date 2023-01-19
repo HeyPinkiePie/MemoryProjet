@@ -1,0 +1,19 @@
+
+div{
+  margin: 2%;
+}
+input{
+  border-top: black;
+  border-right: black;
+  border-left: black;
+  color: whitesmoke;
+  background-color: black;
+}
+.aidesaisie{
+  font-size: 0.8em;
+  color: #888888;
+}
+#lesBoutons{
+  display: flex;
+  justify-content: space-around;
+}

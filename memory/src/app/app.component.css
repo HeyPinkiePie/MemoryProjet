@@ -1,0 +1,27 @@
+*{
+  color: snow;
+}
+h1{
+  text-align: center;
+}
+nav{
+  margin-left: 1%;
+  padding: 1%;
+  width: 40%;
+}
+nav,.ecranPrincipal{
+  background-color: black;
+  border-radius: 20px;
+  border: yellow solid 2px;
+}
+main{
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 23% 54% 23%;
+  grid-template-rows: 100%;
+}
+.ecranPrincipal{
+  grid-column-start: 2;
+  grid-column-end: 3;
+
+}

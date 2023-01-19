@@ -1,0 +1,14 @@
+*{
+font-size: 1em;
+color: whitesmoke;
+}
+
+a:visited{
+  color: whitesmoke;
+}
+a:hover{
+  color: yellow;
+}
+/*#inscription,#connexion{*/
+/*  */
+/*}*/

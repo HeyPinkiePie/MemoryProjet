@@ -1,0 +1,28 @@
+<h3>Inscrivez-vous</h3>
+<form [formGroup]="CreationCompteForm"  *ngIf="!(user)">
+
+  <div class="mb-3">
+    <label for="idNom" class="form-label">Nom d'utilisateur</label>
+      <input formControlName="champNom" type="text" id="idNom" placeholder="3 caractères minimum" [ngClass]="{'form-control':true,'is-invalid':nomInvalide()}" #inputFocus>
+  </div>
+  <div class="mb-3">
+    <label for="idMail" class="form-label">Email</label>
+    <input formControlName="champMail"  type="email"  id="idMail" placeholder="adress@domaine.xx"  [ngClass]="{'form-control':true,'is-invalid':emailInvalide()}">
+  </div>
+  <div class="mb-3">
+    <label for="idPwd1" class="form-label">Mot de passe</label>
+    <input formControlName="champPwd1"  type="password" id="idPwd1" placeholder="Votre mot de passe" [ngClass]="{'form-control':true,'is-invalid':mdpInvalide()}">
+    <p class="form-label aidesaisie">Au moins un symbole, un chiffre et 6 caractères minimum</p>
+  </div>
+  <div class="mb-3">
+    <label for="idPwd2" class="form-label">Confirmez le mot de passe</label>
+    <input  formControlName="champPwd2" type="password" id="idPwd2" [ngClass]="{'form-control':true,'is-invalid':mdpDifferents()}">
+  </div>
+  <div  class="container">
+    <div id="lesBoutons">
+    <button type="button" class="btn btn-light" (click)="insription()">Création du compte</button>
+    <button type="button" class="btn btn-light" (click)="resetForm()">Annuler</button>
+    </div>
+  </div>
+</form>
+<h4 *ngIf="user"> vous êtes déja connecté</h4>

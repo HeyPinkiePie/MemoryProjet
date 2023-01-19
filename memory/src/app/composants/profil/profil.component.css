@@ -1,0 +1,13 @@
+*{
+  margin: 2%;
+}
+
+img{
+  width: 40%;
+  height: 40%;
+}
+input{
+  color: whitesmoke;
+  background-color: black;
+  border-style: none;
+}

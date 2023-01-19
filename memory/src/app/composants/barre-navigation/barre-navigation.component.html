@@ -1,0 +1,11 @@
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/accueil">Accueil</a>
+    <a id="inscription" class="navbar-brand disabled" routerLink="/creerCpte"   *ngIf="!(user | async)">S'inscrire</a>
+    <a id="connexion"  class="navbar-brand disabled" routerLink="/login"  *ngIf="!(user | async)">Se connecter</a>
+    <a id="decnx"  class="navbar-brand disabled" (click)="Deconnecter()" routerLink="/login"  *ngIf="(user | async)">Se Déconnecter</a>
+    <a class="navbar-brand" routerLink="/profil">Profil</a>
+    <a class="navbar-brand"  routerLink="/jouer">Jouer</a>
+  </div>
+</nav>

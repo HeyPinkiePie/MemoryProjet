@@ -1,0 +1,28 @@
+<main *ngIf="user">
+  <h3> votre profil</h3>
+  <form [formGroup]="profilForm">
+    <div>
+        <label for="nomReadOnly" >Votre nom : </label>
+        <input type="text" readonly  id="nomReadOnly" value="{{user.nom}}">
+    </div>
+    <div>
+        <label for="emailReadOnly" >Votre adresse email : </label>
+        <input type="text" readonly  id="emailReadOnly" value="{{user.email}}">
+    </div>
+    <div>
+        <label for="choixMemory" >Choix de memory : </label>
+        <select  id="choixMemory" formControlName="selectionMemory">
+          <option *ngFor="let choix of memoryservice.choixMemory" [ngValue]="choix"  (click)="afficheImage(choix)">{{choix.valeur}}</option>
+        </select>
+        <img src="{{choixMemoryChemin}}" alt="exemple">
+    </div>
+    <div>
+        <label for="choixtaille" >Choix de taille de grille : </label>
+        <select  id="choixtaille" formControlName="selectionTaille">
+          <option *ngFor="let choix of memoryservice.choixTailleGrille" value="{{choix}}">{{choix}}</option>
+        </select>
+    </div>
+    <button type="button" (click)="SauvegarderProfil()">Sauvegarder</button>
+  </form>
+</main>
+<p *ngIf="!user">Vous devez être connecté pour accéder à votre profil</p>
