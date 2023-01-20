@@ -1,0 +1,48 @@
+<h3>Tableau des scores</h3>
+<main>
+  <section *ngIf="user && nbscoreUser(user.nom)>0">
+  <p><b>Voici vos scores {{user.nom}} :</b></p>
+    <table class="table">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">memory</th>
+        <th scope="col">score</th>
+        <th scope="col">date</th>
+      </tr>
+      <tr *ngFor="let score of scoresUser(user.nom)">
+        <th scope="row"></th>
+        <td> {{score.choixMemory}}</td>
+        <td> {{score.score}}</td>
+        <td> le {{score.dateFormatee() | date:'dd/MM/yyyy à HH:mm'}}</td>
+      </tr>
+    </table>
+  </section>
+
+  <section *ngIf="user && nbscoreUser(user.nom)===0">
+    <p>Vous n'avez pas encore gagné de partie, {{user.nom}} </p>
+  </section>
+
+  <section *ngIf="(scores && nbscores>0)">
+    <p><b> Voici tous les scores : </b></p>
+    <table class="table">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">joueur</th>
+        <th scope="col">memory</th>
+        <th scope="col">score</th>
+        <th scope="col">date</th>
+      </tr>
+      <tr *ngFor="let score of scores">
+        <th scope="row"></th>
+        <td> {{score.nomJoueur}}</td>
+        <td> {{score.choixMemory}}</td>
+        <td> {{score.score}}</td>
+        <td> le {{score.dateFormatee() | date:'dd/MM/yyyy à HH:mm'}}</td>
+      </tr>
+    </table>
+  </section>
+
+  <section *ngIf="(!scores || nbscores===0)">
+    <p> Personne n'a joué pour le moment...</p>
+  </section>
+</main>

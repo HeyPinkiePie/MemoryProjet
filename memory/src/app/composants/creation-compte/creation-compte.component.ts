@@ -37,9 +37,9 @@ export class CreationCompteComponent {
   //appelé au click sur le bouton "Création du compte".
   public insription() {
       if (!this.formulaireInvalide()) {
-        if (this.CreationCompteForm.controls["champNom"].invalid) alert("Ce nom est déjà pris, choisissez-en un autre svp");
-        else if (this.CreationCompteForm.controls["champMail"].invalid) alert("Cette adresse email est liée à un autre compte, " +
-          "veuillez vous connecter ou choisir une autre adresse.");
+        if (this.CreationCompteForm.controls["champNom"].invalid ||this.CreationCompteForm.controls["champMail"].invalid)
+                alert(this.CreationCompteForm.controls["champNom"].invalid ? this.CreationCompteForm.controls["champNom"].getError('message').value : "" + "\n " +
+                  this.CreationCompteForm.controls["champMail"].invalid ? this.CreationCompteForm.controls["champMail"].getError('message').value : "");
         else {
           this.joueurService.creerCompte(this.CreationCompteForm.controls["champNom"].value,
                     this.CreationCompteForm.controls["champMail"].value,
@@ -65,8 +65,7 @@ export class CreationCompteComponent {
       this.mdpDifferents() ||
       !this.CreationCompteForm.controls["champNom"].touched ||
       !this.CreationCompteForm.controls["champMail"].touched ||
-      !this.CreationCompteForm.controls["champPwd1"].touched
-      ;
+      !this.CreationCompteForm.controls["champPwd1"].touched;
   }
 
   public nomInvalide(): boolean {
@@ -99,13 +98,13 @@ export class CreationCompteComponent {
   /////////////////
   // réinitialiser le jeu lors du click sur la barre espace
   @HostListener('document:keypress', ['$event'])
-  reInitBarreEspace(event: KeyboardEvent) {
+  public reInitBarreEspace(event: KeyboardEvent) :void {
     if (event.key === "Enter") {
       this.insription();
     }
   }
 // donner le focus au Nom à l'affichage de l'écran d'inscription
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     if (this.inputFocus) {
       this.inputFocus.first.nativeElement.focus();
     }

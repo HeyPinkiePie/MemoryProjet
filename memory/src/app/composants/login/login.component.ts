@@ -26,12 +26,12 @@ export class LoginComponent{
     });
   }
 
-// donner le focus au Nom à l'affichage de l'écran de connexion
-//   private ngAfterViewInit() :void{
-//     if (this.inputFocus) {
-//       this.inputFocus.first.nativeElement.focus();
-//     }
-//   }
+//donner le focus au Nom à l'affichage de l'écran de connexion
+  public ngAfterViewInit() :void{
+    if (this.inputFocus) {
+      this.inputFocus.first.nativeElement.focus();
+    }
+  }
 
   /////////////////////
   //Vérifications
@@ -53,13 +53,13 @@ export class LoginComponent{
   public connexion() : void{
    let ok:boolean= this.jouerService.cnx(this.loginFormulaire.controls["champNom"].value,this.loginFormulaire.controls["champPwd"].value);
    if (ok) this.router.navigate(["/profil"]);
-   else alert("cet utilisateur n'existe pas, veuillez vérifier les informations saisies ou créer un compte.")
+   else alert("Utilisateur ou mot de pass incorrect(s), veuillez vérifier les informations saisies ou créer un compte.")
   }
 
 
   // lorsque l'utilisateur clique sur entrer on valide, si OK
   @HostListener('document:keypress', ['$event'])
-  reInitBarreEspace(event: KeyboardEvent) {
+  public reInitBarreEspace(event: KeyboardEvent):void {
     if (event.key==="Enter" && !this.FormulaireInvalide()) this.connexion();
   }
 

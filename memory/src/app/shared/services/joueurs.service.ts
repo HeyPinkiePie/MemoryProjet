@@ -1,6 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Joueur} from "../modeles/joueur";
 import {ParamMemory} from "../modeles/param-memory";
+import {Score} from "../modeles/score";
 
 
 @Injectable({
@@ -11,16 +12,36 @@ export class JoueursService {
   public cnxEvent:EventEmitter<Joueur>=new EventEmitter<Joueur>();
   private lesJoueurs:Joueur[] | any;
   private _joueurActuel:Joueur|null ;
-
+  private _scores:Score[] |any;
   get joueurActuel(): Joueur | null {
    return this._joueurActuel;
   }
-
+  get scores():Score[]{
+    //recup du  local storage
+      return this._scores;
+  }
   /////////////////////////
   // Initialisation
   /////////////////////////
   constructor() {
     this._joueurActuel=null;
+    // aller récupérer les scores dans le localstorage, sinon tableua vide
+    this.initTableauScores();
+  }
+
+  private initTableauJoueurs(){
+    this.lesJoueurs= JSON.parse(localStorage.getItem("lesJoueurs")!);
+    if (!this.lesJoueurs) this.lesJoueurs=[];
+  }
+  private initTableauScores(){
+    // combien de scores sont récupérés ;
+    let tab:Score[];
+    tab= JSON.parse(localStorage.getItem("lesScores")!);
+    this._scores=[];
+    for (const sc of tab) {
+      this._scores.push( Object.setPrototypeOf(sc,Score.prototype));
+    }
+    console.log("combien de scores sont récupérés :" + this._scores.length + " " + this._scores);
   }
 
   /////////////////////////
@@ -39,11 +60,6 @@ export class JoueursService {
         // propager la connexion aux autres composants
         //this.cnxEvent.emit(this._joueurActuel);
   }
-
-private initTableauJoueurs(){
-  this.lesJoueurs= JSON.parse(localStorage.getItem("lesJoueurs")!);
-  if (!this.lesJoueurs) this.lesJoueurs=[];
-}
 
   public cnx(nom:string,mdp:string) : boolean{
     // récupérer s'il existe et s'il n'a pas déjà été récupéré, le tableau de joueurs dans le local storage, sinon c'est qu'il y a un pb
@@ -67,10 +83,7 @@ private initTableauJoueurs(){
     this._joueurActuel=null;
     this.lesJoueurs=undefined;
   }
-  public emailValide(mail:string):boolean{
-    let expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-    return !expressionReguliere.test(mail);
-  }
+
 
   //modification du profil
   public modifierProfil(choixmemory:ParamMemory,tailleGrille:string){
@@ -80,8 +93,12 @@ private initTableauJoueurs(){
     }
     localStorage.setItem("lesJoueurs",JSON.stringify(this.lesJoueurs));
   }
-
-  champDejaUtilise(champ: string, valeur: string) : boolean{
+// vérifications règles métier diverses
+  public emailValide(mail:string):boolean{
+    let expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+    return !expressionReguliere.test(mail);
+  }
+  public champDejaUtilise(champ: string, valeur: string) : boolean{
     if (!this.lesJoueurs) this.initTableauJoueurs();
     let jo:Joueur|undefined;
     switch (champ){
@@ -93,5 +110,12 @@ private initTableauJoueurs(){
         break;
     }
     return (jo!==undefined);
+  }
+
+  // partie persistance scores
+  public nouveauScore (leScore:Score):void{
+    this._scores.push(leScore);
+    //persistance dans le local storage
+    localStorage.setItem("lesScores",JSON.stringify(this._scores));
   }
 }

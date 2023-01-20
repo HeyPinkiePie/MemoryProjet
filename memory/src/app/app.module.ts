@@ -10,6 +10,8 @@ import { CreationCompteComponent } from './composants/creation-compte/creation-c
 import { ProfilComponent } from './composants/profil/profil.component';
 import { JeuComponent } from './composants/jeu/jeu.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {AffScoresComponent} from "./composants/aff-scores/aff-scores.component";
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -19,14 +21,15 @@ import {ReactiveFormsModule} from "@angular/forms";
     LoginComponent,
     CreationCompteComponent,
     ProfilComponent,
-    JeuComponent
+    JeuComponent,
+    AffScoresComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
     ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,11 +4,9 @@
   <p *ngIf="jeuFini">Vous avez gagné en {{grille.nbClick / 2}} mouvements, bravo ! Appuyez sur espace pour recommencer</p>
 </header>
   <main *ngIf="grille" [formGroup]="grilleDeJeuForm">
-<!--  <p *ngFor="let c of grille.jeuCartes">{{c.id}}</p>-->
-<!--  <div *ngFor="let c of grille.jeuCartes">-->
     <img *ngFor="let c of grille.jeuCartes" src="{{c.pathImage}}" alt="{{c.pathImage}}" (click)="retournerCarte(c)" formGroupName="lesVignettes" [ngClass]="grille.classeAffichage" >
-<!--  </div>-->
 </main>
 <p *ngIf="!jeuFini">Appuyez sur espace pour générer une nouvelle partie</p>
 </main>
 <p *ngIf="!user">Vous devez être connecté pour jouer</p>
+<footer><p class="lien"  (click)="vaVoirlesScore()"> Voir les scores....</p></footer>

@@ -1,0 +1,12 @@
+table{
+  border-style: solid;
+  border-color: yellow;
+  border-radius: 1px;
+  color: whitesmoke;
+  width: 50vw;
+  margin-left: 5%;
+}
+p{
+  margin-left: 5%;
+  font-style: italic;
+}

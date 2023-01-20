@@ -51,9 +51,6 @@ constructor() {
     let tableauInit:Carte[]=[];
     let nbcartesAplacer=nblign*nbcol/2;
     for (let i = 0; i < nbcartesAplacer; i++) {
-      //parcourir le dossier et trouver le nom de chaque carte et parametrer le path
-
-      // let lesFichiers = fs.readdirSync(this.choixGrille);
 
       //chaque carte est ajoutée deux fois, mais il s'agit de deux objets différents ayant le même id
       tableauInit.push(new Carte("id"+i,EtatCarte.inconnue, "assets/"+jeu + "/"+ (i + 1)+"."+ extension));

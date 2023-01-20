@@ -6,6 +6,8 @@ import {MemoryService} from "../../shared/services/memory.service";
 import {GrilleDeJeu} from "../../shared/modeles/grille-de-jeu";
 import {Carte} from "../../shared/modeles/carte";
 import {ParamMemory} from "../../shared/modeles/param-memory";
+import {Score} from "../../shared/modeles/score";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-jeu',
@@ -23,7 +25,7 @@ export class JeuComponent implements OnInit{
   /////////////////////////
   // initialisations
   /////////////////////////
-  constructor(private  jouerService:JoueursService, private builder:FormBuilder, private memoryService:MemoryService) {
+  constructor(private  jouerService:JoueursService, private builder:FormBuilder, private memoryService:MemoryService, private router:Router) {
     this.grilleDeJeuForm=this.builder.group({
       lesVignettes:['']
     });
@@ -33,11 +35,9 @@ export class JeuComponent implements OnInit{
     this.creaGrille();
   }
 
-
   private creaGrille(){
   //création de la grille en fonction des choix de l'utilisateur
   if (this.user){
-
     let choix:ParamMemory = Object.setPrototypeOf(this.user.choixMemory, ParamMemory.prototype);
     this.grille = this.memoryService.initJeu(this.user.tailleGrille,choix.chemin,choix.extension);
   }
@@ -53,6 +53,13 @@ export class JeuComponent implements OnInit{
         this.memoryService.jouer(c,this.grille)
         if (this.grille.nbCartesTrouvees=== this.grille.nbCartes)  {
             this.jeuFini=true;
+            // on stocke le score
+          if (this.user) { this.jouerService.nouveauScore(new Score(this.user.nom,
+                                                    this.grille.nbClick / 2,
+                                                          this.user.choixMemory.valeur,
+                                                          this.user.choixMemory.valeur,
+                                                          new Date()));
+          }
         }
   }
 
@@ -64,4 +71,7 @@ export class JeuComponent implements OnInit{
     }
   }
 
+  public vaVoirlesScore() : void {
+    this.router.navigate(["/scores"]);
+  }
 }
