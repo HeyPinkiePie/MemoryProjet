@@ -38,11 +38,12 @@ export class JoueursService {
     let tab:Score[];
     tab= JSON.parse(localStorage.getItem("lesScores")!);
     this._scores=[];
-    for (const sc of tab) {
-      this._scores.push( Object.setPrototypeOf(sc,Score.prototype));
+    if (tab) {
+      for (const sc of tab) {
+        this._scores.push(Object.setPrototypeOf(sc, Score.prototype));
+      }
     }
-    console.log("combien de scores sont récupérés :" + this._scores.length + " " + this._scores);
-  }
+    }
 
   /////////////////////////
   // traitement

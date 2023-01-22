@@ -3,14 +3,18 @@ export class Score{
   private _score:number;
   private _tailleGrille:string;
   private _choixMemory:string;
-  private readonly _laDate:Date;
+  private _laDate:Date;
 
   get laDate(): Date {
     return this._laDate;
   }
 
+  set laDate(value: Date) {
+    this._laDate = value;
+  }
+
   public dateFormatee():string{
-      return this._laDate.toLocaleString();
+      return this._laDate.toLocaleString(`fr-CH`);
   }
 
   get nomJoueur(): string {
@@ -45,11 +49,12 @@ export class Score{
     this._choixMemory = value;
   }
 
-  constructor(nomJoueur: string, score: number, tailleGrille: string, choixMemory: string, date:Date) {
+  constructor(nomJoueur: string, score: number, tailleGrille: string, choixMemory: string, quelledate: Date) {
     this._nomJoueur = nomJoueur;
     this._score = score;
     this._tailleGrille = tailleGrille;
     this._choixMemory = choixMemory;
-    this._laDate=date;
+    this._laDate=quelledate;
+    console.log(this.dateFormatee());
   }
 }

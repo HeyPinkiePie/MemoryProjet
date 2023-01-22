@@ -37,9 +37,9 @@ export class CreationCompteComponent {
   //appelé au click sur le bouton "Création du compte".
   public insription() {
       if (!this.formulaireInvalide()) {
-        if (this.CreationCompteForm.controls["champNom"].invalid ||this.CreationCompteForm.controls["champMail"].invalid)
-                alert(this.CreationCompteForm.controls["champNom"].invalid ? this.CreationCompteForm.controls["champNom"].getError('message').value : "" + "\n " +
-                  this.CreationCompteForm.controls["champMail"].invalid ? this.CreationCompteForm.controls["champMail"].getError('message').value : "");
+          if (this.CreationCompteForm.controls["champNom"].invalid ||this.CreationCompteForm.controls["champMail"].invalid)
+            alert((this.CreationCompteForm.controls["champNom"].getError('message')?.value ?? "" ) + "\n " +
+                  (this.CreationCompteForm.controls["champMail"].getError('message')?.value ?? ""));
         else {
           this.joueurService.creerCompte(this.CreationCompteForm.controls["champNom"].value,
                     this.CreationCompteForm.controls["champMail"].value,
